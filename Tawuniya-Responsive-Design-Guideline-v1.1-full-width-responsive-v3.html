@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Tawuniya Responsive Design & Screen Adaptation Guideline v1.1">
+<title>Tawuniya Responsive Design & Screen Adaptation Guideline v1.1</title>
+<style>
+:root{
+  --dark-purple:#34295E;
+  --main-purple:#6B47F5;
+  --light-purple:#D6D1ED;
+  --warm-white:#F7F6F2;
+  --ink:#1F1B33;
+  --ink-soft:#524C6B;
+  --line:#E4E0F2;
+  --white:#FFFFFF;
+  --ok:#1B7A5B;
+  --ok-bg:#E4F5EE;
+  --warn:#9A6B00;
+  --warn-bg:#FFF3DC;
+  --radius:12px;
+  --sidebar-w:292px;
+  --content-max:none;
+  --nav-height:82px;
+  font-size:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--warm-white);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{
+  outline:3px solid rgba(107,71,245,.35);
+  outline-offset:3px;
+}
+.skip-link{
+  position:absolute;
+  left:-9999px;
+  top:0;
+  background:var(--main-purple);
+  color:#fff;
+  padding:10px 16px;
+  z-index:300;
+  border-radius:0 0 8px 0;
+}
+.skip-link:focus{left:0}
+
+.shell{
+  display:flex;
+  min-height:100vh;
+  width:100%;
+  max-width:none;
+  margin:0;
+}
+.sidebar{
+  width:var(--sidebar-w);
+  flex:0 0 var(--sidebar-w);
+  background:var(--dark-purple);
+  color:#E7E3FA;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  padding:26px 20px 36px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:5px;
+}
+.brand-mark{
+  width:36px;
+  height:36px;
+  border-radius:9px;
+  background:var(--main-purple);
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-weight:800;
+}
+.brand-text{
+  font-weight:750;
+  color:#fff;
+  font-size:15px;
+  line-height:1.2;
+}
+.version-chip{
+  display:inline-block;
+  margin:10px 0 20px;
+  font-size:10.5px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  background:rgba(255,255,255,.1);
+  color:#CFC8F2;
+  padding:5px 9px;
+  border-radius:20px;
+}
+.sidebar nav a{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:#C9C3EE;
+  font-size:12.7px;
+  padding:7px 9px;
+  border-radius:7px;
+  margin:1px 0;
+  transition:background .15s ease,color .15s ease;
+}
+.sidebar nav a:hover{
+  background:rgba(255,255,255,.08);
+  color:#fff;
+}
+.sidebar nav a.active{
+  background:rgba(107,71,245,.30);
+  color:#fff;
+}
+.toc-num{
+  font-variant-numeric:tabular-nums;
+  font-size:10px;
+  opacity:.65;
+  min-width:22px;
+}
+.layer-label{
+  margin:18px 0 7px;
+  padding:0 9px;
+  font-size:9.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:#9C93CC;
+  font-weight:800;
+}
+.layer-label:first-child{margin-top:0}
+
+main{
+  flex:1 1 auto;
+  min-width:0;
+  width:calc(100% - var(--sidebar-w));
+  max-width:none;
+  padding:42px 5vw calc(var(--nav-height) + 60px);
+}
+.hero{
+  width:100%;
+  padding:10px 0 28px;
+}
+.eyebrow{
+  font-size:10.5px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--main-purple);
+  font-weight:850;
+}
+.hero h1{
+  font-size:clamp(30px,4vw,44px);
+  line-height:1.08;
+  color:var(--dark-purple);
+  margin:9px 0 10px;
+  letter-spacing:-.025em;
+}
+.hero p{
+  color:var(--ink-soft);
+  font-size:14px;
+  margin:0;
+}
+.section > *{
+  max-width:none;
+}
+.section p,
+.section ul,
+.section pre,
+.section .callout{
+  width:100%;
+}
+
+.hero-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:14px;
+}
+.pill{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:10.5px;
+  color:var(--ink-soft);
+}
+
+/* The document is a page/section viewer:
+   only one top-level section is rendered at a time. */
+.section{
+  display:none;
+  width:100%;
+  max-width:none;
+  scroll-margin-top:24px;
+  min-height:calc(100vh - 250px);
+  padding:38px 0 30px;
+  animation:sectionIn .18s ease-out;
+}
+.section.active{
+  display:block;
+}
+@keyframes sectionIn{
+  from{opacity:.35;transform:translateY(5px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.section-kicker{
+  display:inline-block;
+  color:var(--main-purple);
+  font-size:10.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  font-weight:850;
+  margin-bottom:5px;
+}
+h2{
+  font-size:30px;
+  line-height:1.2;
+  color:var(--dark-purple);
+  margin:0 0 22px;
+  letter-spacing:-.015em;
+}
+h3{
+  font-size:18px;
+  color:var(--dark-purple);
+  margin:30px 0 10px;
+}
+p{margin:0 0 16px}
+.lead{
+  font-size:18px;
+  line-height:1.65;
+  color:#3F3855;
+}
+ul{
+  padding-inline-start:22px;
+  margin:0 0 18px;
+}
+li{margin-bottom:8px}
+.callout{
+  border:1px solid var(--light-purple);
+  background:#FAF8FF;
+  border-radius:var(--radius);
+  padding:17px 19px;
+  margin:20px 0;
+}
+.callout strong{
+  display:block;
+  color:var(--main-purple);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  margin-bottom:5px;
+}
+.callout p{margin:0;color:var(--ink-soft)}
+.table-wrap{
+  width:100%;
+  overflow-x:auto;
+  margin:20px 0 24px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+  min-width:620px;
+}
+th{
+  background:var(--dark-purple);
+  color:#fff;
+  text-align:left;
+  padding:11px 12px;
+  font-weight:700;
+  line-height:1.35;
+}
+td{
+  padding:10px 12px;
+  border-bottom:1px solid var(--line);
+  vertical-align:top;
+  line-height:1.5;
+}
+tbody tr:nth-child(even){background:#FBFAFE}
+tbody tr:last-child td{border-bottom:0}
+pre{
+  background:var(--dark-purple);
+  color:#EDEBFF;
+  border-radius:10px;
+  padding:16px;
+  overflow:auto;
+  font:13px/1.6 "SFMono-Regular",Consolas,monospace;
+}
+
+/* Fixed section footer / pager */
+.page-nav{
+  position:fixed;
+  left:calc(50% + var(--sidebar-w)/2);
+  bottom:16px;
+  transform:translateX(-50%);
+  width:calc(100vw - var(--sidebar-w) - 48px);
+  max-width:1200px;
+  min-height:68px;
+  z-index:120;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:10px;
+  align-items:center;
+  padding:8px 10px;
+  background:rgba(255,255,255,.97);
+  border:1px solid var(--line);
+  border-radius:15px;
+  box-shadow:0 12px 34px rgba(52,41,94,.17);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.page-nav button{
+  border:0;
+  background:transparent;
+  color:var(--ink);
+  font:inherit;
+  min-height:52px;
+  padding:7px 10px;
+  border-radius:10px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  text-align:left;
+}
+.page-nav button:hover{background:#F5F2FC}
+.page-nav button[aria-disabled="true"]{
+  visibility:hidden;
+  pointer-events:none;
+}
+.page-nav .next{
+  justify-content:flex-end;
+  text-align:right;
+}
+.nav-copy{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+.nav-label{
+  font-size:9px;
+  line-height:1.2;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  font-weight:850;
+}
+.nav-title{
+  font-size:12px;
+  line-height:1.35;
+  color:var(--dark-purple);
+  font-weight:750;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:260px;
+}
+.arrow{
+  font-size:19px;
+  line-height:1;
+  color:var(--main-purple);
+}
+.progress{
+  min-width:100px;
+  text-align:center;
+  font-size:10px;
+  color:var(--ink-soft);
+  line-height:1.25;
+}
+.progress strong{
+  display:block;
+  color:var(--dark-purple);
+  font-size:13px;
+}
+.doc-footer{
+  margin-top:30px;
+  padding:18px 0 10px;
+  border-top:1px solid var(--line);
+  color:var(--ink-soft);
+  font-size:11px;
+}
+
+@media(max-width:980px){
+  .sidebar{
+    position:fixed;
+    left:0;
+    z-index:150;
+    transform:translateX(-100%);
+    transition:transform .2s ease;
+    box-shadow:4px 0 28px rgba(0,0,0,.22);
+  }
+  #mobile-nav-toggle:checked ~ .shell .sidebar{transform:translateX(0)}
+  .topbar{
+    display:flex;
+    position:sticky;
+    top:0;
+    z-index:140;
+    background:var(--dark-purple);
+    color:#fff;
+    padding:10px 14px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .topbar strong{
+    font-size:14px;
+    line-height:1.2;
+  }
+  .mobile-toggle{
+    width:44px;
+    height:44px;
+    padding:0;
+    border:0;
+    border-radius:10px;
+    background:rgba(255,255,255,.12);
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+  }
+  .hamburger{
+    width:20px;
+    height:14px;
+    position:relative;
+    display:block;
+  }
+  .hamburger::before,
+  .hamburger::after,
+  .hamburger span{
+    content:"";
+    position:absolute;
+    left:0;
+    width:20px;
+    height:2px;
+    border-radius:2px;
+    background:#fff;
+  }
+  .hamburger::before{top:0}
+  .hamburger span{top:6px}
+  .hamburger::after{bottom:0}
+  .sidebar-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(20,16,40,.45);
+    z-index:140;
+  }
+  #mobile-nav-toggle:checked ~ .shell .sidebar-overlay{display:block}
+  main{
+    width:100%;
+    padding:30px 24px calc(var(--nav-height) + 55px);
+    max-width:none;
+  }
+  .hero{
+    padding-bottom:18px;
+  }
+  .hero h1{
+    font-size:34px;
+  }
+  .section{
+    min-height:calc(100vh - 190px);
+    padding-top:26px;
+  }
+  .page-nav{
+    left:50%;
+    bottom:10px;
+    width:calc(100vw - 20px);
+    max-width:none;
+    min-height:72px;
+    padding:7px;
+    border-radius:14px;
+    grid-template-columns:1fr auto 1fr;
+    gap:4px;
+  }
+  .page-nav button{
+    min-height:58px;
+    padding:6px 7px;
+    gap:6px;
+  }
+  .nav-title{
+    max-width:125px;
+    font-size:11px;
+  }
+  .progress{
+    min-width:58px;
+  }
+}
+@media(max-width:600px){
+  main{
+    padding-left:16px;
+    padding-right:16px;
+  }
+  .hero-meta{display:none}
+  .hero h1{font-size:32px}
+  .nav-label{font-size:8.5px}
+  .nav-title{max-width:105px}
+  .arrow{font-size:18px}
+}
+
+@media print{
+  .sidebar,.topbar,.page-nav{display:none!important}
+  main{
+    width:100%;
+    padding:0;
+    max-width:none;
+  }
+  body{background:#fff}
+  .section{display:block!important;min-height:0;page-break-before:always}
+  .section:first-of-type{page-break-before:auto}
+  .doc-footer{margin-top:30px}
+}
+@page{margin:1.6cm}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<input type="checkbox" id="mobile-nav-toggle" hidden>
+<div class="topbar">
+  <strong>Tawuniya · Responsive Guideline</strong>
+  <label class="mobile-toggle" for="mobile-nav-toggle" aria-label="Open navigation">
+    <span></span><span></span><span></span>
+  </label>
+</div>
+
+<div class="shell">
+  <label class="sidebar-overlay" for="mobile-nav-toggle"></label>
+  <aside class="sidebar" aria-label="Table of contents">
+    <div class="brand"><div class="brand-mark">T</div><div class="brand-text">Tawuniya<br>Design System</div></div>
+    <span class="version-chip">v1.1 · Responsive</span>
+    <nav><div class="layer-label">Layer 1 · Quick reference</div><a href="#s1" data-section="1"><span class="toc-num">01</span><span>Purpose</span></a><a href="#s2" data-section="2"><span class="toc-num">02</span><span>Principles</span></a><a href="#s3" data-section="3"><span class="toc-num">03</span><span>Global Research: How Major Systems Approach Responsive Design</span></a><div class="layer-label">Layer 2 · Detailed guidelines</div><a href="#s4" data-section="4"><span class="toc-num">04</span><span>Challenging the 1080px Desktop Assumption</span></a><a href="#s5" data-section="5"><span class="toc-num">05</span><span>The Three Responsive Categories</span></a><a href="#s6" data-section="6"><span class="toc-num">06</span><span>Separating Breakpoints From Device Types</span></a><a href="#s7" data-section="7"><span class="toc-num">07</span><span>Foldable and Dual-Screen Devices</span></a><a href="#s8" data-section="8"><span class="toc-num">08</span><span>Layout Behavior Per Breakpoint</span></a><a href="#s9" data-section="9"><span class="toc-num">09</span><span>Container Strategy</span></a><a href="#s10" data-section="10"><span class="toc-num">10</span><span>Grid System</span></a><a href="#s11" data-section="11"><span class="toc-num">11</span><span>Typography</span></a><a href="#s12" data-section="12"><span class="toc-num">12</span><span>Component Adaptation Rules</span></a><a href="#s13" data-section="13"><span class="toc-num">13</span><span>Accessibility &amp; Zoom</span></a><a href="#s14" data-section="14"><span class="toc-num">14</span><span>Orientation</span></a><a href="#s15" data-section="15"><span class="toc-num">15</span><span>Responsive Rules</span></a><a href="#s16" data-section="16"><span class="toc-num">16</span><span>Recommended Tawuniya Standard</span></a><a href="#s17" data-section="17"><span class="toc-num">17</span><span>Design System Implementation</span></a><a href="#s18" data-section="18"><span class="toc-num">18</span><span>QA &amp; Testing Matrix</span></a><a href="#s19" data-section="19"><span class="toc-num">19</span><span>Do / Don&#x27;t</span></a><a href="#s20" data-section="20"><span class="toc-num">20</span><span>Tawuniya Responsive Design Standard — v1.0</span></a><div class="layer-label">Layer 3 · Implementation &amp; QA</div><a href="#s21" data-section="21"><span class="toc-num">21</span><span>References</span></a></nav>
+  </aside>
+
+  <main id="main-content">
+    <header class="hero" id="top">
+      <div class="eyebrow">Tawuniya Design System</div>
+      <h1>Responsive Design &amp;<br>Screen Adaptation Guideline</h1>
+      <p>Proposed Tawuniya Responsive Framework — Version 1.1</p>
+      <div class="hero-meta">
+        <span class="pill">Internal Design System Documentation</span>
+        <span class="pill">Research-based</span>
+        <span class="pill">Standards-referenced</span>
+        <span class="pill">Framework-agnostic</span>
+      </div>
+    </header>
+
+
+
+    
+<section class="section active" aria-hidden="false" id="s1" data-title="Purpose">
+  <div class="section-kicker">Section 01</div>
+  <h2>Purpose</h2>
+  <p class="lead">Tawuniya&#x27;s digital portals — including A&#x27;amal, the SME business-insurance portal — have historically been designed desktop-first. This guideline defines one shared, evidence-based responsive framework for Product Design, UX/UI Design, Development, Design System, Product Management, and QA.</p>
+<p>The framework uses exactly three responsive categories — Desktop, Tablet, and Mobile — defined by available viewport width rather than device names. It replaces device-based thinking with space-based thinking: design for the width the page actually has available.</p>
+<div class="callout"><strong>Design recommendation</strong><p>Exact pixel breakpoints and other numeric values in this document are Tawuniya-specific recommendations, not universal industry standards.</p></div>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    
+    <a href="#s2" class="section-footer-link next"><span><span><small>Next</small><strong>Principles</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s2" data-title="Principles">
+  <div class="section-kicker">Section 02</div>
+  <h2>Principles</h2>
+  <ul><li>Design for available space, not device names.</li><li>Use fluid layouts between breakpoints.</li><li>Introduce a breakpoint only when the layout genuinely needs to change.</li><li>Avoid designing for individual device models or resolutions.</li><li>Never allow important content, controls, or data to be clipped, hidden without access, or rendered unreachable.</li><li>Prefer reflow, re-stacking, and re-prioritization over shrinking.</li><li>Preserve information hierarchy at every width.</li><li>Preserve functionality across Desktop, Tablet, and Mobile.</li><li>Use horizontal scrolling deliberately and only where appropriate.</li><li>Treat foldables and dual-screen devices according to available viewport width, not as a fourth category.</li></ul>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s1" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Purpose</strong></span></a>
+    <a href="#s3" class="section-footer-link next"><span><span><small>Next</small><strong>Global Research: How Major Systems Approach Responsive Design</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s3" data-title="Global Research: How Major Systems Approach Responsive Design">
+  <div class="section-kicker">Section 03</div>
+  <h2>Global Research: How Major Systems Approach Responsive Design</h2>
+  <p>The guideline synthesizes patterns from W3C/WCAG, Google Material Design, Microsoft Fluent/Windows, Apple&#x27;s Human Interface Guidelines, IBM Carbon, Shopify Polaris, and Salesforce Lightning.</p>
+<h3>3.1 Responsive vs. adaptive design</h3>
+<p>Responsive design uses fluid grids, flexible images, and CSS media queries so one layout continuously adapts to viewport width. Adaptive design uses discrete layouts at defined breakpoints. Modern enterprise systems use a hybrid: fluid behavior within a size class, with structural changes at breakpoints.</p>
+<h3>3.2 Breakpoint patterns</h3>
+<div class="table-wrap"><table><thead><tr><th>System</th><th>Small / Mobile</th><th>Medium / Tablet</th><th>Large / Desktop</th></tr></thead><tbody><tr><td>Material Design 3</td><td>Compact: 0–599dp</td><td>Medium: 600–839dp</td><td>Expanded: 840dp+</td></tr><tr><td>Microsoft Fluent / Windows</td><td>0–640px</td><td>641–1007px</td><td>1008px+</td></tr><tr><td>Apple HIG</td><td>Compact width</td><td>Regular width</td><td>Resolved by width × height</td></tr><tr><td>IBM Carbon</td><td>sm: 320px</td><td>md: 672px</td><td>lg: 1056px; xlg: 1312px</td></tr><tr><td>Shopify Polaris</td><td>xs: 0px</td><td>sm: 490px; md: —</td><td>lg: 1040px; xl: 1440px</td></tr></tbody></table></div>
+<p>Across these systems, navigation, grids, tables, and component density adapt structurally as available width changes.</p>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s2" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Principles</strong></span></a>
+    <a href="#s4" class="section-footer-link next"><span><span><small>Next</small><strong>Challenging the 1080px Desktop Assumption</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s4" data-title="Challenging the 1080px Desktop Assumption">
+  <div class="section-kicker">Section 04</div>
+  <h2>Challenging the 1080px Desktop Assumption</h2>
+  <p>The initial brief proposed Desktop support down to approximately 1080px. The guideline evaluates that number against enterprise design-system patterns and realistic corporate laptop conditions.</p>
+<ul><li>1366×768 remains a common laptop resolution, and a 1080px threshold can push real users out of Desktop mode before scaling or window resizing is considered.</li><li>At 125% Windows scaling, a 1366px-wide screen yields roughly 1093 effective CSS pixels before browser chrome and other deductions.</li><li>At 150% scaling, effective width can drop to roughly 910px on the same physical screen.</li><li>Enterprise users commonly resize browser windows for side-by-side work with Outlook, Teams, or Excel.</li><li>Browser chrome consumes horizontal space unevenly.</li><li>WCAG reflow means the Desktop lower bound is a UX/density decision, not an accessibility floor.</li></ul>
+<div class="callout"><strong>Tawuniya recommendation</strong><p>Set the Desktop lower bound at 1024px, rather than 1080px or 1200px, and validate it against Tawuniya portal analytics when available.</p></div>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s3" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Global Research: How Major Systems Approach Responsive Design</strong></span></a>
+    <a href="#s5" class="section-footer-link next"><span><span><small>Next</small><strong>The Three Responsive Categories</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s5" data-title="The Three Responsive Categories">
+  <div class="section-kicker">Section 05</div>
+  <h2>The Three Responsive Categories</h2>
+  <div class="table-wrap"><table><thead><tr><th>Category</th><th>Viewport range</th><th>Primary behavior</th></tr></thead><tbody><tr><td>Mobile</td><td>0–767px</td><td>4-column grid; single-column content; full-screen navigation overlay</td></tr><tr><td>Tablet</td><td>768–1023px</td><td>8-column grid; collapsible navigation drawer; 2-column-capable layouts</td></tr><tr><td>Desktop</td><td>1024px+</td><td>12-column grid; persistent navigation; multi-column dashboards; full data tables</td></tr></tbody></table></div>
+<p>These ranges have no gaps and no overlaps. The same physical device may resolve to different categories depending on its current available viewport width.</p>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s4" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Challenging the 1080px Desktop Assumption</strong></span></a>
+    <a href="#s6" class="section-footer-link next"><span><span><small>Next</small><strong>Separating Breakpoints From Device Types</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s6" data-title="Separating Breakpoints From Device Types">
+  <div class="section-kicker">Section 06</div>
+  <h2>Separating Breakpoints From Device Types</h2>
+  <p>Responsive behavior is defined strictly as available viewport width → responsive behavior. Statements such as “Desktop = desktop computer” or “Mobile = iPhone” are intentionally avoided.</p>
+<div class="table-wrap"><table><thead><tr><th>Scenario</th><th>Approx. available width</th><th>Result</th></tr></thead><tbody><tr><td>1920px monitor, full-screen browser</td><td>~1850px</td><td>Desktop</td></tr><tr><td>Desktop browser resized to half-screen</td><td>~900px</td><td>Tablet</td></tr><tr><td>10–11in tablet portrait</td><td>~768–834px</td><td>Tablet</td></tr><tr><td>10–11in tablet landscape</td><td>~1024–1194px</td><td>Desktop</td></tr><tr><td>Mobile phone portrait</td><td>~360–430px</td><td>Mobile</td></tr><tr><td>Mobile phone landscape</td><td>~740–930px</td><td>Mobile or Tablet</td></tr><tr><td>Foldable phone, folded</td><td>~300–400px</td><td>Mobile</td></tr><tr><td>Foldable phone, unfolded</td><td>~700–900px</td><td>Tablet</td></tr><tr><td>Two browser windows side-by-side</td><td>~650–960px each</td><td>Tablet</td></tr></tbody></table></div>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s5" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>The Three Responsive Categories</strong></span></a>
+    <a href="#s7" class="section-footer-link next"><span><span><small>Next</small><strong>Foldable and Dual-Screen Devices</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s7" data-title="Foldable and Dual-Screen Devices">
+  <div class="section-kicker">Section 07</div>
+  <h2>Foldable and Dual-Screen Devices</h2>
+  <p>Foldables and dual-screen devices are an extension of ordinary responsive behavior, not a fourth breakpoint category.</p>
+<h3>7.1 Default rule</h3>
+<p>Classify a foldable by its current available viewport width using the same Mobile / Tablet / Desktop ranges.</p>
+<h3>7.2 When special handling is needed</h3>
+<p>Special handling is warranted when a hinge or fold genuinely splits the display into multiple logical segments. CSS Media Queries Level 5 provides viewport-segment features for this case.</p>
+<ul><li>Never place interactive controls, form fields, or critical text directly under a hinge/fold seam.</li><li>For two side-by-side segments, prefer a two-pane layout when appropriate.</li><li>For vertically stacked segments, place primary content in the top segment and secondary controls or a keyboard-adjacent panel in the bottom segment.</li><li>When one segment is reported, fall back entirely to ordinary width-based responsive rules.</li></ul>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s6" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Separating Breakpoints From Device Types</strong></span></a>
+    <a href="#s8" class="section-footer-link next"><span><span><small>Next</small><strong>Layout Behavior Per Breakpoint</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s8" data-title="Layout Behavior Per Breakpoint">
+  <div class="section-kicker">Section 08</div>
+  <h2>Layout Behavior Per Breakpoint</h2>
+  <h3>8.1 Global layout</h3>
+<div class="table-wrap"><table><thead><tr><th>Area</th><th>Desktop ≥1024px</th><th>Tablet 768–1023px</th><th>Mobile 0–767px</th></tr></thead><tbody><tr><td>Page width</td><td>Fluid, full viewport</td><td>Fluid, full viewport</td><td>Fluid, full viewport</td></tr><tr><td>Content max-width</td><td>1440px; dashboards may go full-bleed</td><td>Fluid to container</td><td>Fluid to container</td></tr><tr><td>Horizontal margins</td><td>32px; 48px on very wide monitors</td><td>24px</td><td>16px</td></tr><tr><td>Grid</td><td>12 columns</td><td>8 columns</td><td>4 columns</td></tr><tr><td>Gutters</td><td>24px</td><td>16px</td><td>12px</td></tr><tr><td>Vertical rhythm</td><td>8px base scale</td><td>8px base scale</td><td>8px base scale</td></tr></tbody></table></div>
+<h3>8.2 Navigation</h3>
+<div class="table-wrap"><table><thead><tr><th>Area</th><th>Desktop</th><th>Tablet</th><th>Mobile</th></tr></thead><tbody><tr><td>Global header</td><td>Logo, search, notifications, account, language</td><td>Same content with condensed search; some icons may move to overflow</td><td>Logo + hamburger + account; search opens as full-screen overlay</td></tr><tr><td>Side navigation</td><td>Persistent</td><td>Collapsible drawer, closed by default</td><td>Full-screen drawer/overlay</td></tr><tr><td>Breadcrumbs</td><td>Full path</td><td>Full path; middle truncation if needed</td><td>Back + current title; full path expandable if needed</td></tr><tr><td>Tabs</td><td>All visible</td><td>All visible; horizontal scroll if needed</td><td>Horizontal scroll or dropdown/select</td></tr></tbody></table></div>
+<h3>8.5 Data tables</h3>
+<p>Tables must not simply shrink until they become unusable. Tablet can use column prioritization and confined horizontal scrolling; Mobile can transform rows into labeled cards or use horizontal scroll for genuinely tabular tasks. Every data point must remain reachable.</p>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s7" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Foldable and Dual-Screen Devices</strong></span></a>
+    <a href="#s9" class="section-footer-link next"><span><span><small>Next</small><strong>Container Strategy</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s9" data-title="Container Strategy">
+  <div class="section-kicker">Section 09</div>
+  <h2>Container Strategy</h2>
+  <p>Tawuniya portals use a hybrid container strategy: constrained content by default, with full-width dashboards as a deliberate exception.</p>
+<div class="table-wrap"><table><thead><tr><th>Behavior</th><th>When to use it</th></tr></thead><tbody><tr><td>Stretch / full-bleed</td><td>Dashboards, data grids, and list views where extra width increases useful information density</td></tr><tr><td>Remain constrained</td><td>Forms, detail pages, settings, policy documents, help/article content</td></tr><tr><td>Reflow</td><td>Multi-column layouts crossing a breakpoint</td></tr><tr><td>Stack</td><td>Side-by-side layouts when the minimum comfortable column width can no longer be supported</td></tr></tbody></table></div>
+<p>Standard content uses a 1440px maximum width and is centered. Dashboards and dense list/grid views may use full-bleed containers while individual widgets retain sensible internal constraints.</p>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s8" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Layout Behavior Per Breakpoint</strong></span></a>
+    <a href="#s10" class="section-footer-link next"><span><span><small>Next</small><strong>Grid System</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s10" data-title="Grid System">
+  <div class="section-kicker">Section 10</div>
+  <h2>Grid System</h2>
+  <p>The recommended Tawuniya grid is 12 columns on Desktop, 8 on Tablet, and 4 on Mobile.</p>
+<div class="table-wrap"><table><thead><tr><th>Breakpoint</th><th>Columns</th><th>Gutter</th><th>Margin</th><th>Max content width</th></tr></thead><tbody><tr><td>Desktop ≥1024px</td><td>12</td><td>24px</td><td>32px</td><td>1440px; dashboards may be full-bleed</td></tr><tr><td>Tablet 768–1023px</td><td>8</td><td>16px</td><td>24px</td><td>Fluid</td></tr><tr><td>Mobile 0–767px</td><td>4</td><td>12px</td><td>16px</td><td>Fluid</td></tr></tbody></table></div>
+<h3>10.1 Nested grids and card spans</h3>
+<p>Nested grids are supported. Card spans should be defined in column units rather than fixed pixels. Example: a card spanning 4 of 12 columns on Desktop can become 4 of 8 on Tablet and 4 of 4 on Mobile.</p>
+<h3>10.2 Practical example</h3>
+<p>A policy-summary dashboard can use three KPI cards at 4/12 each on Desktop, 4/8 on Tablet, and 4/4 on Mobile.</p>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s9" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Container Strategy</strong></span></a>
+    <a href="#s11" class="section-footer-link next"><span><span><small>Next</small><strong>Typography</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s11" data-title="Typography">
+  <div class="section-kicker">Section 11</div>
+  <h2>Typography</h2>
+  <p>A separate type scale at every breakpoint adds maintenance overhead without proportional usability gain. The core type scale and weights remain consistent, while line length, spacing, and truncation adapt.</p>
+<ul><li>Primary reading content should not fall below 14px; 16px is preferred.</li><li>Display/hero headings may reduce one or two steps on Mobile when needed for fit.</li><li>Secondary dense-table metadata may use smaller text, but not below 12px.</li><li>Target long-form line length is 50–75 characters at Desktop.</li><li>Ellipsis is appropriate only for secondary metadata and must provide a way to view the full value.</li></ul>
+<h3>11.3 Arabic, RTL, and mixed content</h3>
+<ul><li>Arabic strings commonly run 20–30% longer than English equivalents; allow for this in component sizing.</li><li>Grid, navigation, icon directionality, and form button placement mirror horizontally in RTL.</li><li>Numbers, dates, and currency follow Tawuniya&#x27;s established localization rules.</li><li>Mixed Arabic/English content requires correct bidirectional text handling.</li></ul>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s10" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Grid System</strong></span></a>
+    <a href="#s12" class="section-footer-link next"><span><span><small>Next</small><strong>Component Adaptation Rules</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s12" data-title="Component Adaptation Rules">
+  <div class="section-kicker">Section 12</div>
+  <h2>Component Adaptation Rules</h2>
+  <p>Components should adapt through three levels: resize, reflow, and transform. The preferred response is the least disruptive one that preserves usability and functionality.</p>
+<div class="table-wrap"><table><thead><tr><th>Pattern</th><th>Desktop</th><th>Tablet</th><th>Mobile</th></tr></thead><tbody><tr><td>Cards</td><td>3–4+ per row as appropriate</td><td>2-up where density allows</td><td>Single column</td></tr><tr><td>Forms</td><td>Multi-column where useful</td><td>2-column for short related fields</td><td>Single column; long forms may use wizard/stepper</td></tr><tr><td>Tables</td><td>Full table</td><td>Prioritized columns + confined scroll/hide</td><td>Card-per-row or explicit table mode</td></tr><tr><td>Modals</td><td>Centered dialog</td><td>Reduced width / adapted presentation</td><td>Full-screen</td></tr><tr><td>Toolbars</td><td>Full toolbar</td><td>Priority actions + overflow</td><td>Priority actions + overflow/bottom sheet</td></tr><tr><td>Floating actions</td><td>Rare</td><td>Optional for dominant action</td><td>Common for dominant action on long screens</td></tr><tr><td>Progress indicators</td><td>Resize</td><td>Resize</td><td>Resize</td></tr></tbody></table></div>
+<p>The goal is to preserve the information hierarchy and full functionality while changing structure only when available space requires it.</p>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s11" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Typography</strong></span></a>
+    <a href="#s13" class="section-footer-link next"><span><span><small>Next</small><strong>Accessibility &amp; Zoom</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s13" data-title="Accessibility &amp; Zoom">
+  <div class="section-kicker">Section 13</div>
+  <h2>Accessibility &amp; Zoom</h2>
+  <ul><li>WCAG 2.1 SC 1.4.10 Reflow: screens should remain usable at an effective width of 320 CSS pixels, with limited exceptions for inherently two-dimensional content such as data grids and maps.</li><li>WCAG 2.1 SC 1.4.4: text must remain usable up to 200% resizing without loss of content or functionality.</li><li>WCAG 2.2 SC 2.5.8: pointer targets should be at least 24×24 CSS pixels or have equivalent spacing; Tawuniya should aim for 44×44px for primary actions where practical.</li><li>Test at 100%, 125%, and 150% Windows scaling on common corporate resolutions.</li><li>All interactive elements must remain keyboard reachable with visible focus states.</li><li>Horizontal scrolling should be limited to explicitly exempted content such as genuinely tabular data.</li></ul>
+<p>A layout that passes only at 100% zoom on one fixed resolution has not been fully validated against this guideline.</p>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s12" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Component Adaptation Rules</strong></span></a>
+    <a href="#s14" class="section-footer-link next"><span><span><small>Next</small><strong>Orientation</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s14" data-title="Orientation">
+  <div class="section-kicker">Section 14</div>
+  <h2>Orientation</h2>
+  <p>Portrait and landscape are not separate responsive categories. Orientation is simply one input that changes available viewport width; the resulting width determines the responsive category.</p>
+<div class="table-wrap"><table><thead><tr><th>Scenario</th><th>Likely category</th><th>Reason</th></tr></thead><tbody><tr><td>Tablet portrait</td><td>Tablet</td><td>Typical portrait width ~768–834px</td></tr><tr><td>Tablet landscape</td><td>Desktop-like</td><td>Many tablet landscape widths are ≥1024px</td></tr><tr><td>Mobile phone landscape</td><td>Mobile or Tablet</td><td>Depends on the actual resulting width</td></tr></tbody></table></div>
+<p>A screen must accommodate whichever category its current width lands in rather than assuming a device always presents one orientation.</p>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s13" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Accessibility &amp; Zoom</strong></span></a>
+    <a href="#s15" class="section-footer-link next"><span><span><small>Next</small><strong>Responsive Rules</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s15" data-title="Responsive Rules">
+  <div class="section-kicker">Section 15</div>
+  <h2>Responsive Rules</h2>
+  <ul><li>Design for available space, not device names or orientation labels.</li><li>Use fluid layouts between the three defined breakpoints.</li><li>Add a breakpoint-specific rule only when the layout genuinely breaks.</li><li>Validate Arabic/RTL alongside English/LTR at the same breakpoint.</li><li>Never allow important content to be clipped, permanently hidden, or unreachable.</li><li>Prefer reflow and transformation over shrinking text, controls, or touch targets below minimums.</li><li>Preserve information hierarchy and full functionality across all ranges.</li><li>Use horizontal scrolling only where the guideline explicitly permits it.</li><li>Treat foldables through viewport width and viewport-segment enhancement, never as a fourth category.</li><li>Validate layouts under 200%/400% zoom and common Windows scaling levels.</li><li>Define grid and card spans in column units, not fixed pixels.</li></ul>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s14" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Orientation</strong></span></a>
+    <a href="#s16" class="section-footer-link next"><span><span><small>Next</small><strong>Recommended Tawuniya Standard</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s16" data-title="Recommended Tawuniya Standard">
+  <div class="section-kicker">Section 16</div>
+  <h2>Recommended Tawuniya Standard</h2>
+  <div class="table-wrap"><table><thead><tr><th>Breakpoint</th><th>Range</th><th>Grid</th><th>Primary layout</th><th>Typical use</th></tr></thead><tbody><tr><td>Desktop</td><td>1024px+</td><td>12</td><td>Persistent side navigation; full tables; multi-column dashboards</td><td>Corporate laptops/desktops; sufficiently wide tablet landscape</td></tr><tr><td>Tablet</td><td>768–1023px</td><td>8</td><td>Collapsible drawer; prioritized tables; 2-column dashboards</td><td>Tablet portrait; resized/split browser windows; large phones in landscape</td></tr><tr><td>Mobile</td><td>0–767px</td><td>4</td><td>Full-screen navigation overlay; card-transformed tables; single-column dashboards</td><td>Phones and small resized windows</td></tr></tbody></table></div>
+<h3>Desktop ≥1024px</h3>
+<ul><li>1440px maximum content width; dashboards may be full-bleed.</li><li>32px margins; 48px on very wide monitors.</li><li>12-column grid with 24px gutters.</li><li>Persistent side rail and full header.</li><li>Multi-column cards, list-detail patterns, and full data tables.</li><li>Full-featured component variants.</li></ul>
+<h3>Tablet 768–1023px</h3>
+<ul><li>24px margins and 8-column grid with 16px gutters.</li><li>Collapsible drawer and condensed header.</li><li>2-column cards where appropriate.</li><li>Prioritized/scrollable data tables with sticky header + first column.</li><li>Overflow menus for secondary/tertiary actions beyond roughly 4–5 actions.</li></ul>
+<h3>Mobile 0–767px</h3>
+<ul><li>16px margins and 4-column grid with 12px gutters.</li><li>Full-screen overlay navigation and icon-focused header.</li><li>Single-column cards and dashboards.</li><li>Tables transform to card-per-row.</li><li>Full-width primary actions, full-screen modals/pickers, and bottom sheets for overflow actions.</li></ul>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s15" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Responsive Rules</strong></span></a>
+    <a href="#s17" class="section-footer-link next"><span><span><small>Next</small><strong>Design System Implementation</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s17" data-title="Design System Implementation">
+  <div class="section-kicker">Section 17</div>
+  <h2>Design System Implementation</h2>
+  <h3>17.1 Figma</h3>
+<ul><li>Create shared number variables: Breakpoint/Desktop = 1024, Breakpoint/Tablet = 768, Breakpoint/Mobile = 0.</li><li>Create saved grid styles: Desktop/12-col, Tablet/8-col, Mobile/4-col using the documented gutters and margins.</li><li>Use Auto Layout with Fill container / Hug contents instead of fixed widths wherever possible.</li><li>Expose Density or Breakpoint variants on complex components with Desktop / Tablet / Mobile states.</li><li>Use explicit responsive variants for transform-level changes such as tables → cards and drawer → overlay.</li><li>Set min/max widths for key components such as modals so Figma communicates implementation constraints.</li></ul>
+<h3>17.2 Development</h3>
+<pre>Desktop: min-width: 1024px
+Tablet: min-width: 768px and max-width: 1023px
+Mobile: max-width: 767px</pre>
+<ul><li>Adopt a mobile-first cascade.</li><li>Express breakpoints as CSS custom properties using the same values as Figma.</li><li>Layer viewport-segment media queries on top of standard width-based rules as progressive enhancement.</li><li>Use logical CSS properties such as margin-inline-start and padding-inline-end for RTL-safe layouts.</li></ul>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s16" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Recommended Tawuniya Standard</strong></span></a>
+    <a href="#s18" class="section-footer-link next"><span><span><small>Next</small><strong>QA &amp; Testing Matrix</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s18" data-title="QA &amp; Testing Matrix">
+  <div class="section-kicker">Section 18</div>
+  <h2>QA &amp; Testing Matrix</h2>
+  <div class="table-wrap"><table><thead><tr><th>Test</th><th>Approx. width</th><th>Verify</th></tr></thead><tbody><tr><td>Minimum Mobile</td><td>320px</td><td>No unintended horizontal scrolling; no clipping; readable text; targets ≥24×24px</td></tr><tr><td>Common Mobile</td><td>390–430px</td><td>Standard Mobile layout; card-per-row tables; full-width primary actions</td></tr><tr><td>Mobile landscape</td><td>~740–800px</td><td>Correct Mobile/low-Tablet resolution based on actual width</td></tr><tr><td>Minimum Tablet</td><td>768px</td><td>Correct switch to Tablet patterns</td></tr><tr><td>Common Tablet</td><td>820–1024px</td><td>Tablet remains stable up to Desktop boundary</td></tr><tr><td>Minimum Desktop</td><td>1024px</td><td>Correct switch to persistent navigation, 12-column grid, full tables</td></tr><tr><td>Common Desktop</td><td>1366–1440px</td><td>Validate at 100% and 125% Windows scaling</td></tr><tr><td>Large Desktop</td><td>1920px+</td><td>1440px content cap and dashboard full-bleed behavior</td></tr><tr><td>Resized browser</td><td>320–1920px</td><td>Drag through breakpoints; no layout breaks or content loss</td></tr><tr><td>Browser zoom</td><td>400% at 1280px</td><td>WCAG 1.4.10 reflow</td></tr><tr><td>Foldable outer</td><td>~300–400px</td><td>Behaves as Mobile</td></tr><tr><td>Foldable inner</td><td>~700–900px / 1000px+</td><td>Behaves as Tablet or Desktop based on actual width; no controls under hinge</td></tr></tbody></table></div>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s17" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Design System Implementation</strong></span></a>
+    <a href="#s19" class="section-footer-link next"><span><span><small>Next</small><strong>Do / Don&#x27;t</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s19" data-title="Do / Don&#x27;t">
+  <div class="section-kicker">Section 19</div>
+  <h2>Do / Don&#x27;t</h2>
+  <div class="table-wrap"><table><thead><tr><th>Do</th><th>Don&#x27;t</th></tr></thead><tbody><tr><td>Design and test against viewport width ranges.</td><td>Design or name breakpoints after specific devices.</td></tr><tr><td>Use the 1024px / 768px boundaries consistently.</td><td>Introduce one-off breakpoints without documenting why.</td></tr><tr><td>Validate Arabic and English at the same breakpoint.</td><td>Sign off after testing English only.</td></tr><tr><td>Use column hiding or card transformation for tables that don&#x27;t fit.</td><td>Shrink tables until unreadable.</td></tr><tr><td>Keep targets ≥24×24px; aim for 44×44px where possible.</td><td>Assume target size only matters on Mobile.</td></tr><tr><td>Test 400% zoom and 125–150% Windows scaling.</td><td>Test only at 100% zoom on an exact unscaled resolution.</td></tr><tr><td>Define card/grid spans in column units.</td><td>Hard-code pixel widths for grid components.</td></tr><tr><td>Treat foldables via viewport width / viewport-segments.</td><td>Create a fourth Foldable breakpoint.</td></tr><tr><td>Use logical CSS properties for RTL.</td><td>Duplicate every layout rule with manual RTL overrides.</td></tr></tbody></table></div>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s18" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>QA &amp; Testing Matrix</strong></span></a>
+    <a href="#s20" class="section-footer-link next"><span><span><small>Next</small><strong>Tawuniya Responsive Design Standard — v1.0</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s20" data-title="Tawuniya Responsive Design Standard — v1.0">
+  <div class="section-kicker">Section 20</div>
+  <h2>Tawuniya Responsive Design Standard — v1.0</h2>
+  <div class="callout"><strong>Bookmark this section</strong><p>This is the summary designers and developers should use as the day-to-day reference.</p></div>
+<div class="table-wrap"><table><thead><tr><th>Breakpoint</th><th>Range</th><th>Grid</th><th>Gutter</th><th>Margin</th></tr></thead><tbody><tr><td>Mobile</td><td>0–767px</td><td>4 columns</td><td>12px</td><td>16px</td></tr><tr><td>Tablet</td><td>768–1023px</td><td>8 columns</td><td>16px</td><td>24px</td></tr><tr><td>Desktop</td><td>1024px+</td><td>12 columns</td><td>24px</td><td>32px (48px on very wide monitors)</td></tr></tbody></table></div>
+<h3>Most important rules</h3>
+<ul><li>Exactly three responsive categories: Desktop, Tablet, Mobile — defined by viewport width.</li><li>Desktop starts at 1024px, not 1080px.</li><li>No fourth Foldable category; foldables follow width-based rules with viewport-segment enhancement where needed.</li><li>Data tables never simply shrink; use column hiding/scroll on Tablet or card transformation on Mobile, keeping every data point reachable.</li><li>WCAG 1.4.10 Reflow and 2.5.8 Target Size are minimums at every breakpoint.</li><li>Arabic/RTL is validated alongside English/LTR at every breakpoint.</li><li>Grid spans use 12/8/4 column units.</li><li>Use constrained 1440px content for reading/forms and full-bleed behavior for dashboards.</li></ul>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s19" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Do / Don&#x27;t</strong></span></a>
+    <a href="#s21" class="section-footer-link next"><span><span><small>Next</small><strong>References</strong></span><span class="section-footer-arrow">→</span></a>
+  </nav>
+</section>
+<section class="section" aria-hidden="true" id="s21" data-title="References">
+  <div class="section-kicker">Section 21</div>
+  <h2>References</h2>
+  <p>Primary and authoritative sources consulted for the guideline:</p>
+<ul><li>W3C WCAG 2.1 — Understanding SC 1.4.10 Reflow</li><li>W3C WCAG 2.2 — Understanding SC 2.5.8 Target Size (Minimum)</li><li>W3C CSS Working Group — Media Queries Level 5 (Viewport Segments)</li><li>MDN Web Docs — horizontal-viewport-segments / Viewport segments API</li><li>Google Material Design 3 — Applying layout / Window size classes</li><li>Google Android Developers — Support different screen sizes / Window size classes</li><li>Microsoft Learn — Screen sizes and breakpoints for responsive design (Windows Apps)</li><li>Apple — Human Interface Guidelines, Layout</li><li>IBM Carbon Design System — 2x Grid</li><li>IBM Carbon Design System — Data table component guidance</li><li>Shopify Polaris — Tokens / Breakpoints</li><li>Salesforce Lightning Design System — Grid / lightning-layout</li><li>W3C — Device Posture API explainer / foldable device concepts</li></ul>
+<div class="callout"><strong>Source note</strong><p>The exact 1024/768px boundaries, 12/8/4 grid, and container max-widths are Tawuniya-specific design recommendations synthesized from the referenced sources, not direct quotations from a single standard.</p></div>
+  <nav class="section-footer-nav" aria-label="Section navigation">
+    <a href="#s20" class="section-footer-link previous"><span class="section-footer-arrow">←</span><span><small>Previous</small><strong>Tawuniya Responsive Design Standard — v1.0</strong></span></a>
+    
+  </nav>
+</section>
+
+    <nav class="page-nav" aria-label="Section navigation">
+      <button id="prev-section" class="prev" type="button">
+        <span class="arrow" aria-hidden="true">←</span>
+        <span class="nav-copy"><span class="nav-label">Previous</span><span id="prev-title" class="nav-title"></span></span>
+      </button>
+      <div class="progress" aria-live="polite"><strong id="nav-progress">01 / 21</strong><span id="nav-current">Purpose</span></div>
+      <button id="next-section" class="next" type="button">
+        <span class="nav-copy"><span class="nav-label">Next</span><span id="next-title" class="nav-title">02 · Principles</span></span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </button>
+    </nav>
+
+    <footer class="doc-footer">
+      <nav class="footer-nav" aria-label="Footer section navigation">
+        <a id="footer-prev" aria-disabled="true"><span aria-hidden="true">←</span><span><span class="footer-label">Previous</span><span id="footer-prev-title" class="footer-title"></span></span></a>
+        <a id="footer-next" class="footer-next" aria-disabled="true"><span><span class="footer-label">Next</span><span id="footer-next-title" class="footer-title"></span></span><span aria-hidden="true">→</span></a>
+      </nav>
+      Tawuniya Digital Portals — Responsive Design &amp; Screen Adaptation Guideline · Version 1.1 · Internal use
+    </footer>
+  </main>
+</div>
+
+<script>
+(function(){
+  const sections = Array.from(document.querySelectorAll('.section'));
+  const sidebarLinks = Array.from(document.querySelectorAll('.sidebar nav a[data-section]'));
+
+  const prev = document.getElementById('prev-section');
+  const next = document.getElementById('next-section');
+  const prevTitle = document.getElementById('prev-title');
+  const nextTitle = document.getElementById('next-title');
+  const progress = document.getElementById('nav-progress');
+  const currentTitle = document.getElementById('nav-current');
+
+  // The footer uses the same Previous/Next controls as the page pager.
+  // These IDs are kept compatible with the polished versions.
+  const footerPrev = document.getElementById('footer-prev');
+  const footerNext = document.getElementById('footer-next');
+  const footerPrevTitle = document.getElementById('footer-prev-title');
+  const footerNextTitle = document.getElementById('footer-next-title');
+
+  if (!sections.length) return;
+
+  let currentIndex = 0;
+
+  function getTitle(index){
+    return sections[index] ? sections[index].dataset.title : '';
+  }
+
+  function setActiveSidebar(){
+    sidebarLinks.forEach(function(link){
+      const linkIndex = Number(link.dataset.section) - 1;
+      const active = linkIndex === currentIndex;
+
+      link.classList.toggle('active', active);
+
+      if (active){
+        link.setAttribute('aria-current', 'page');
+        // Keep the active item visible inside the scrollable sidebar.
+        link.scrollIntoView({
+          block: 'nearest',
+          inline: 'nearest'
+        });
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+  }
+
+  function configurePagerButton(button, titleElement, targetIndex, direction){
+    if (!button || !titleElement) return;
+
+    const available = targetIndex >= 0 && targetIndex < sections.length;
+    const title = available ? getTitle(targetIndex) : '';
+
+    titleElement.textContent = title;
+
+    button.setAttribute(
+      'aria-disabled',
+      available ? 'false' : 'true'
+    );
+
+    button.setAttribute(
+      'aria-label',
+      available
+        ? 'Go to ' + direction + ' section: ' + title
+        : direction.charAt(0).toUpperCase() + direction.slice(1) + ' section unavailable'
+    );
+
+    button.style.visibility = available ? 'visible' : 'hidden';
+    button.style.pointerEvents = available ? 'auto' : 'none';
+
+    if (available){
+      button.onclick = function(){
+        showSection(targetIndex, true);
+      };
+    } else {
+      button.onclick = null;
+    }
+  }
+
+  function updateFooter(){
+    const previousIndex = currentIndex - 1;
+    const nextIndex = currentIndex + 1;
+
+    // Footer labels always come directly from the sections adjacent to
+    // the current section — never from stale scroll state.
+    if (footerPrev && footerPrevTitle){
+      const available = previousIndex >= 0;
+      footerPrevTitle.textContent = available ? getTitle(previousIndex) : '';
+      footerPrev.setAttribute(
+        'aria-disabled',
+        available ? 'false' : 'true'
+      );
+
+      if (available){
+        footerPrev.href = '#' + sections[previousIndex].id;
+        footerPrev.setAttribute(
+          'aria-label',
+          'Go to previous section: ' + getTitle(previousIndex)
+        );
+        footerPrev.style.visibility = 'visible';
+        footerPrev.style.pointerEvents = 'auto';
+        footerPrev.onclick = function(event){
+          event.preventDefault();
+          showSection(previousIndex, true);
+        };
+      } else {
+        footerPrev.removeAttribute('href');
+        footerPrev.setAttribute('aria-label', 'Previous section unavailable');
+        footerPrev.style.visibility = 'hidden';
+        footerPrev.style.pointerEvents = 'none';
+        footerPrev.onclick = null;
+      }
+    }
+
+    if (footerNext && footerNextTitle){
+      const available = nextIndex < sections.length;
+      footerNextTitle.textContent = available ? getTitle(nextIndex) : '';
+      footerNext.setAttribute(
+        'aria-disabled',
+        available ? 'false' : 'true'
+      );
+
+      if (available){
+        footerNext.href = '#' + sections[nextIndex].id;
+        footerNext.setAttribute(
+          'aria-label',
+          'Go to next section: ' + getTitle(nextIndex)
+        );
+        footerNext.style.visibility = 'visible';
+        footerNext.style.pointerEvents = 'auto';
+        footerNext.onclick = function(event){
+          event.preventDefault();
+          showSection(nextIndex, true);
+        };
+      } else {
+        footerNext.removeAttribute('href');
+        footerNext.setAttribute('aria-label', 'Next section unavailable');
+        footerNext.style.visibility = 'hidden';
+        footerNext.style.pointerEvents = 'none';
+        footerNext.onclick = null;
+      }
+    }
+  }
+
+  function updateNavigation(){
+    const previousIndex = currentIndex - 1;
+    const nextIndex = currentIndex + 1;
+
+    currentTitle.textContent = getTitle(currentIndex);
+    progress.querySelector('strong').textContent =
+      String(currentIndex + 1).padStart(2, '0') +
+      ' / ' +
+      String(sections.length).padStart(2, '0');
+
+    prevTitle.textContent =
+      previousIndex >= 0 ? getTitle(previousIndex) : '';
+
+    nextTitle.textContent =
+      nextIndex < sections.length ? getTitle(nextIndex) : '';
+
+    configurePagerButton(
+      prev,
+      prevTitle,
+      previousIndex,
+      'previous'
+    );
+
+    configurePagerButton(
+      next,
+      nextTitle,
+      nextIndex,
+      'next'
+    );
+
+    setActiveSidebar();
+    updateFooter();
+  }
+
+  function closeMobileMenu(){
+    const toggle = document.getElementById('mobile-nav-toggle');
+    if (toggle) toggle.checked = false;
+  }
+
+  function showSection(index, updateHash){
+    index = Math.max(0, Math.min(index, sections.length - 1));
+    currentIndex = index;
+
+    sections.forEach(function(section, i){
+      const active = i === currentIndex;
+
+      section.classList.toggle('active', active);
+      section.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+
+    updateNavigation();
+    closeMobileMenu();
+
+    // Start each newly selected section at the top.
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+
+    if (updateHash){
+      history.pushState(
+        { section: sections[currentIndex].id },
+        '',
+        '#' + sections[currentIndex].id
+      );
+    }
+  }
+
+  function indexFromHash(){
+    const id = window.location.hash.replace('#', '');
+    const index = sections.findIndex(function(section){
+      return section.id === id;
+    });
+
+    return index >= 0 ? index : 0;
+  }
+
+  // Sidebar navigation: selecting an item makes it active immediately and
+  // switches the page to that exact section.
+  sidebarLinks.forEach(function(link){
+    link.addEventListener('click', function(event){
+      event.preventDefault();
+
+      const index = Number(link.dataset.section) - 1;
+
+      if (!Number.isNaN(index)){
+        showSection(index, true);
+      }
+    });
+  });
+
+  document.addEventListener('keydown', function(event){
+    if (event.altKey && event.key === 'ArrowLeft' && currentIndex > 0){
+      event.preventDefault();
+      showSection(currentIndex - 1, true);
+    }
+
+    if (
+      event.altKey &&
+      event.key === 'ArrowRight' &&
+      currentIndex < sections.length - 1
+    ){
+      event.preventDefault();
+      showSection(currentIndex + 1, true);
+    }
+  });
+
+  window.addEventListener('popstate', function(){
+    showSection(indexFromHash(), false);
+  });
+
+  window.addEventListener('hashchange', function(){
+    showSection(indexFromHash(), false);
+  });
+
+  // Initial state is determined from the URL hash, if present.
+  showSection(indexFromHash(), false);
+})();
+</script>
+
+<script>
+(() => {
+  const sections = [...document.querySelectorAll('.section[id]')];
+  if (!sections.length) return;
+
+  const sidebarLinks = [...document.querySelectorAll('[data-section], .sidebar a[href^="#s"]')];
+
+  const prevBtn = document.getElementById('prev-section');
+  const nextBtn = document.getElementById('next-section');
+  const prevTitle = document.getElementById('prev-title');
+  const nextTitle = document.getElementById('next-title');
+  const navProgress = document.getElementById('nav-progress');
+  const navCurrent = document.getElementById('nav-current');
+
+  const footerPrev = document.getElementById('footer-prev');
+  const footerNext = document.getElementById('footer-next');
+  const footerPrevTitle = document.getElementById('footer-prev-title');
+  const footerNextTitle = document.getElementById('footer-next-title');
+
+  let currentIndex = 0;
+  let isSwitching = false;
+
+  function titleOf(index) {
+    if (index < 0 || index >= sections.length) return '';
+    const heading = sections[index].querySelector('h1, h2, h3');
+    return heading ? heading.textContent.trim() : `Section ${index + 1}`;
+  }
+
+  function sectionNumber(index) {
+    return String(index + 1).padStart(2, '0');
+  }
+
+  function setButton(button, title, targetIndex, disabled) {
+    if (!button) return;
+    button.disabled = disabled;
+    button.hidden = disabled;
+    if (!disabled) {
+      button.dataset.target = String(targetIndex);
+      button.setAttribute('aria-label', title);
+    } else {
+      delete button.dataset.target;
+      button.removeAttribute('aria-label');
+    }
+  }
+
+  function updateSidebar() {
+    sidebarLinks.forEach(link => {
+      let targetId = link.dataset.section || link.getAttribute('href');
+      if (targetId && !targetId.startsWith('#')) targetId = '#' + targetId;
+      const active = targetId === '#' + sections[currentIndex].id;
+
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+
+      if (active) {
+        link.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+    });
+  }
+
+  function updatePager() {
+    const prev = currentIndex - 1;
+    const next = currentIndex + 1;
+
+    const prevText = prev >= 0
+      ? `${sectionNumber(prev)} · ${titleOf(prev)}`
+      : '';
+    const nextText = next < sections.length
+      ? `${sectionNumber(next)} · ${titleOf(next)}`
+      : '';
+
+    if (prevTitle) prevTitle.textContent = prevText;
+    if (nextTitle) nextTitle.textContent = nextText;
+
+    if (footerPrevTitle) footerPrevTitle.textContent = prevText;
+    if (footerNextTitle) footerNextTitle.textContent = nextText;
+
+    setButton(prevBtn, prevText, prev, prev < 0);
+    setButton(nextBtn, nextText, next, next >= sections.length);
+
+    if (footerPrev) {
+      footerPrev.hidden = prev < 0;
+      footerPrev.href = prev >= 0 ? `#${sections[prev].id}` : '#';
+    }
+    if (footerNext) {
+      footerNext.hidden = next >= sections.length;
+      footerNext.href = next < sections.length ? `#${sections[next].id}` : '#';
+    }
+
+    if (navProgress) navProgress.textContent = `${sectionNumber(currentIndex)} / ${String(sections.length).padStart(2, '0')}`;
+    if (navCurrent) navCurrent.textContent = titleOf(currentIndex);
+  }
+
+  function updateSections() {
+    sections.forEach((section, index) => {
+      const active = index === currentIndex;
+      section.classList.toggle('active', active);
+      section.setAttribute('aria-hidden', String(!active));
+      if (active) {
+        section.removeAttribute('inert');
+      } else {
+        section.setAttribute('inert', '');
+      }
+    });
+  }
+
+  function updateUI() {
+    updateSections();
+    updateSidebar();
+    updatePager();
+    document.title = `Tawuniya Responsive Design Guideline · ${titleOf(currentIndex)}`;
+  }
+
+  function showSection(index, updateHash = true, focus = false) {
+    if (index < 0 || index >= sections.length || isSwitching) return;
+
+    isSwitching = true;
+    currentIndex = index;
+    updateUI();
+
+    if (updateHash) {
+      history.pushState({ section: sections[index].id }, '', `#${sections[index].id}`);
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (focus) {
+      const heading = sections[index].querySelector('h1, h2, h3');
+      if (heading) {
+        if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+        setTimeout(() => heading.focus({ preventScroll: true }), 250);
+      }
+    }
+
+    setTimeout(() => { isSwitching = false; }, 300);
+  }
+
+  function indexFromHash() {
+    const id = window.location.hash.replace('#', '');
+    const index = sections.findIndex(section => section.id === id);
+    return index >= 0 ? index : 0;
+  }
+
+  // Intercept sidebar navigation so only one section is shown at a time.
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', event => {
+      let targetId = link.dataset.section || link.getAttribute('href');
+      if (!targetId) return;
+      if (!targetId.startsWith('#')) targetId = '#' + targetId;
+
+      const index = sections.findIndex(section => '#' + section.id === targetId);
+      if (index < 0) return;
+
+      event.preventDefault();
+      showSection(index, true, true);
+    });
+  });
+
+  // Next / Previous controls.
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      const target = Number(prevBtn.dataset.target);
+      if (Number.isInteger(target)) showSection(target, true, true);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      const target = Number(nextBtn.dataset.target);
+      if (Number.isInteger(target)) showSection(target, true, true);
+    });
+  }
+
+  // If the fixed pager is made from anchors rather than buttons.
+  [footerPrev, footerNext].forEach(link => {
+    if (!link) return;
+    link.addEventListener('click', event => {
+      const id = link.getAttribute('href');
+      const index = sections.findIndex(section => '#' + section.id === id);
+      if (index < 0) return;
+      event.preventDefault();
+      showSection(index, true, true);
+    });
+  });
+
+  window.addEventListener('popstate', () => {
+    const index = indexFromHash();
+    currentIndex = index;
+    updateUI();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('hashchange', () => {
+    const index = indexFromHash();
+    if (index !== currentIndex) {
+      currentIndex = index;
+      updateUI();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    const tag = document.activeElement?.tagName;
+    const typing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(tag) ||
+                   document.activeElement?.isContentEditable;
+    if (typing) return;
+
+    if (event.altKey && event.key === 'ArrowLeft' && currentIndex > 0) {
+      event.preventDefault();
+      showSection(currentIndex - 1, true, true);
+    }
+
+    if (event.altKey && event.key === 'ArrowRight' && currentIndex < sections.length - 1) {
+      event.preventDefault();
+      showSection(currentIndex + 1, true, true);
+    }
+  });
+
+  // Initialize from the URL, then force a consistent active state.
+  currentIndex = indexFromHash();
+  updateUI();
+})();
+</script>
+
+</body>
+</html>
